@@ -20,7 +20,7 @@ namespace GraphQL.Instrumentation
         /// <param name="start">The date and time that the GraphQL document began execution. If not UTC, this value will be converted to UTC.</param>
         public static void EnrichWithApolloTracing(this ExecutionResult result, DateTime start)
         {
-            var perf = result?.Perf;
+            var perf = result.Perf;
             if (perf != null)
                 (result.Extensions ??= new Dictionary<string, object>())["tracing"] = CreateTrace(perf, start);
         }

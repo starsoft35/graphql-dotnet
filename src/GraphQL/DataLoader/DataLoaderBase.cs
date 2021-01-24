@@ -52,14 +52,14 @@ namespace GraphQL.DataLoader
         /// Initialize a DataLoaderBase with caching enabled and the specified equality comparer
         /// </summary>
         /// <param name="equalityComparer">Specifies the equality comparer to be used, or null for the default equality comparer</param>
-        public DataLoaderBase(IEqualityComparer<TKey> equalityComparer) : this(true, equalityComparer, int.MaxValue) { }
+        public DataLoaderBase(IEqualityComparer<TKey>? equalityComparer) : this(true, equalityComparer, int.MaxValue) { }
 
         /// <summary>
         /// Initialize a DataLoaderBase with caching enabled and the specified options
         /// </summary>
         /// <param name="equalityComparer">Specifies the equality comparer to be used, or null for the default equality comparer</param>
         /// <param name="maxBatchSize">The maximum number of keys passed to the fetch function at a time</param>
-        public DataLoaderBase(IEqualityComparer<TKey> equalityComparer, int maxBatchSize) : this(true, equalityComparer, maxBatchSize) { }
+        public DataLoaderBase(IEqualityComparer<TKey>? equalityComparer, int maxBatchSize) : this(true, equalityComparer, maxBatchSize) { }
 
         /// <summary>
         /// Initialize a DataLoaderBase with the specified options
@@ -67,7 +67,7 @@ namespace GraphQL.DataLoader
         /// <param name="caching">Indicates if responses should be cached</param>
         /// <param name="equalityComparer">Specifies the equality comparer to be used, or null for the default equality comparer</param>
         /// <param name="maxBatchSize">The maximum number of keys passed to the fetch function at a time</param>
-        public DataLoaderBase(bool caching, IEqualityComparer<TKey> equalityComparer, int maxBatchSize)
+        public DataLoaderBase(bool caching, IEqualityComparer<TKey>? equalityComparer, int maxBatchSize)
         {
             if (maxBatchSize < 1)
                 throw new ArgumentOutOfRangeException(nameof(maxBatchSize));

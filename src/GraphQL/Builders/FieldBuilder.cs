@@ -17,7 +17,7 @@ namespace GraphQL.Builders
         /// <typeparam name="TSourceType">The type of <see cref="IResolveFieldContext.Source"/>.</typeparam>
         /// <typeparam name="TReturnType">The type of the return value of the resolver.</typeparam>
         /// <param name="type">The graph type of the field.</param>
-        public static FieldBuilder<TSourceType, TReturnType> Create<TSourceType, TReturnType>(Type type = null)
+        public static FieldBuilder<TSourceType, TReturnType> Create<TSourceType, TReturnType>(Type? type = null)
             => FieldBuilder<TSourceType, TReturnType>.Create(type);
 
         /// <inheritdoc cref="Create{TSourceType, TReturnType}(Type)"/>
@@ -59,7 +59,7 @@ namespace GraphQL.Builders
         }
 
         /// <inheritdoc cref="Create(IGraphType, string)"/>
-        public static FieldBuilder<TSourceType, TReturnType> Create(Type type = null, string name = "default")
+        public static FieldBuilder<TSourceType, TReturnType> Create(Type? type = null, string name = "default")
         {
             var fieldType = new EventStreamFieldType
             {
@@ -92,7 +92,7 @@ namespace GraphQL.Builders
         /// <summary>
         /// Sets the description of the field.
         /// </summary>
-        public virtual FieldBuilder<TSourceType, TReturnType> Description(string description)
+        public virtual FieldBuilder<TSourceType, TReturnType> Description(string? description)
         {
             FieldType.Description = description;
             return this;
@@ -101,7 +101,7 @@ namespace GraphQL.Builders
         /// <summary>
         /// Sets the deprecation reason of the field.
         /// </summary>
-        public virtual FieldBuilder<TSourceType, TReturnType> DeprecationReason(string deprecationReason)
+        public virtual FieldBuilder<TSourceType, TReturnType> DeprecationReason(string? deprecationReason)
         {
             FieldType.DeprecationReason = deprecationReason;
             return this;
@@ -110,7 +110,7 @@ namespace GraphQL.Builders
         /// <summary>
         /// Sets the default value of fields on input object graph types.
         /// </summary>
-        public virtual FieldBuilder<TSourceType, TReturnType> DefaultValue(TReturnType defaultValue = default)
+        public virtual FieldBuilder<TSourceType, TReturnType> DefaultValue(TReturnType? defaultValue = default)
         {
             FieldType.DefaultValue = defaultValue;
             return this;
@@ -153,7 +153,7 @@ namespace GraphQL.Builders
         /// <param name="name">The name of the argument.</param>
         /// <param name="description">The description of the argument.</param>
         /// <param name="configure">A delegate to further configure the argument.</param>
-        public virtual FieldBuilder<TSourceType, TReturnType> Argument<TArgumentGraphType>(string name, string description, Action<QueryArgument> configure = null)
+        public virtual FieldBuilder<TSourceType, TReturnType> Argument<TArgumentGraphType>(string name, string? description, Action<QueryArgument>? configure = null)
             => Argument<TArgumentGraphType>(name, arg =>
             {
                 arg.Description = description;
@@ -169,8 +169,8 @@ namespace GraphQL.Builders
         /// <param name="description">The description of the argument.</param>
         /// <param name="defaultValue">The default value of the argument.</param>
         /// <param name="configure">A delegate to further configure the argument.</param>
-        public virtual FieldBuilder<TSourceType, TReturnType> Argument<TArgumentGraphType, TArgumentType>(string name, string description,
-            TArgumentType defaultValue = default, Action<QueryArgument> configure = null)
+        public virtual FieldBuilder<TSourceType, TReturnType> Argument<TArgumentGraphType, TArgumentType>(string name, string? description,
+            TArgumentType? defaultValue = default, Action<QueryArgument>? configure = null)
             => Argument<TArgumentGraphType>(name, arg =>
             {
                 arg.Description = description;
@@ -184,7 +184,7 @@ namespace GraphQL.Builders
         /// <typeparam name="TArgumentGraphType">The graph type of the argument.</typeparam>
         /// <param name="name">The name of the argument.</param>
         /// <param name="configure">A delegate to further configure the argument.</param>
-        public virtual FieldBuilder<TSourceType, TReturnType> Argument<TArgumentGraphType>(string name, Action<QueryArgument> configure = null)
+        public virtual FieldBuilder<TSourceType, TReturnType> Argument<TArgumentGraphType>(string name, Action<QueryArgument>? configure = null)
         {
             var arg = new QueryArgument(typeof(TArgumentGraphType))
             {

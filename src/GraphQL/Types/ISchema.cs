@@ -37,7 +37,7 @@ namespace GraphQL.Types
         /// <summary>
         /// Description of the schema.
         /// </summary>
-        string Description { get; set; }
+        string? Description { get; set; }
 
         /// <summary>
         /// The 'query' base graph type; required.
@@ -47,12 +47,12 @@ namespace GraphQL.Types
         /// <summary>
         /// The 'mutation' base graph type; optional.
         /// </summary>
-        IObjectGraphType Mutation { get; set; }
+        IObjectGraphType? Mutation { get; set; }
 
         /// <summary>
         /// The 'subscription' base graph type; optional.
         /// </summary>
-        IObjectGraphType Subscription { get; set; }
+        IObjectGraphType? Subscription { get; set; }
 
         /// <summary>
         /// Returns a list of directives supported by the schema.

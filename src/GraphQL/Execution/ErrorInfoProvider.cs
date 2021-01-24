@@ -46,7 +46,7 @@ namespace GraphQL.Execution
             if (executionError == null)
                 throw new ArgumentNullException(nameof(executionError));
 
-            IDictionary<string, object> extensions = null;
+            IDictionary<string, object>? extensions = null;
 
             if (_options.ExposeExtensions)
             {

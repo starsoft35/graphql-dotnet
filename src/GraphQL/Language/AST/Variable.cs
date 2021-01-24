@@ -10,11 +10,11 @@ namespace GraphQL.Language.AST
         /// </summary>
         public string Name { get; set; }
 
-        private object _value;
+        private object? _value;
         /// <summary>
         /// Gets or sets the value of the variable.
         /// </summary>
-        public object Value
+        public object? Value
         {
             get => _value;
             set

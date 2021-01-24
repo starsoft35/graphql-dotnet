@@ -75,7 +75,7 @@ namespace GraphQL.Execution
         /// </summary>
         public static void SetSubFieldNodes(ExecutionContext context, ObjectExecutionNode parent)
         {
-            var fields = CollectFields(context, parent.GetObjectGraphType(context.Schema), parent.Field?.SelectionSet);
+            var fields = CollectFields(context, parent.GetObjectGraphType(context.Schema)!, parent.Field?.SelectionSet);
             SetSubFieldNodes(context, parent, fields);
         }
 
@@ -84,7 +84,7 @@ namespace GraphQL.Execution
         /// </summary>
         public static void SetSubFieldNodes(ExecutionContext context, ObjectExecutionNode parent, Dictionary<string, Field> fields)
         {
-            var parentType = parent.GetObjectGraphType(context.Schema);
+            var parentType = parent.GetObjectGraphType(context.Schema)!;
 
             var subFields = new Dictionary<string, ExecutionNode>(fields.Count);
 
@@ -152,7 +152,7 @@ namespace GraphQL.Execution
             {
                 if (d != null)
                 {
-                    var node = BuildExecutionNode(parent, itemType, parent.Field, parent.FieldDefinition, index);
+                    var node = BuildExecutionNode(parent, itemType, parent.Field!, parent.FieldDefinition!, index);
                     node.Result = d;
 
                     if (!(d is IDataLoaderResult))
@@ -181,7 +181,7 @@ namespace GraphQL.Execution
                         throw new InvalidOperationException($"Cannot return a null member within a non-null list for list index {index}.");
                     }
 
-                    var nullExecutionNode = new NullExecutionNode(parent, itemType, parent.Field, parent.FieldDefinition, index);
+                    var nullExecutionNode = new NullExecutionNode(parent, itemType, parent.Field!, parent.FieldDefinition!, index);
                     arrayItems.Add(nullExecutionNode);
                 }
 
@@ -220,10 +220,10 @@ namespace GraphQL.Execution
 
             try
             {
-                ReadonlyResolveFieldContext resolveContext = System.Threading.Interlocked.Exchange(ref context.ReusableReadonlyResolveFieldContext, null);
+                ReadonlyResolveFieldContext? resolveContext = System.Threading.Interlocked.Exchange(ref context.ReusableReadonlyResolveFieldContext, null);
                 resolveContext = resolveContext != null ? resolveContext.Reset(node, context) : new ReadonlyResolveFieldContext(node, context);
 
-                var resolver = node.FieldDefinition.Resolver ?? NameFieldResolver.Instance;
+                var resolver = node.FieldDefinition!.Resolver ?? NameFieldResolver.Instance;
                 var result = resolver.Resolve(resolveContext);
 
                 if (result is Task task)
@@ -355,7 +355,7 @@ namespace GraphQL.Execution
             if (context.ThrowOnUnhandledException)
                 return true;
 
-            UnhandledExceptionContext exceptionContext = null;
+            UnhandledExceptionContext? exceptionContext = null;
             if (context.UnhandledExceptionDelegate != null)
             {
                 // be sure not to re-use this instance of `IResolveFieldContext`
@@ -382,7 +382,7 @@ namespace GraphQL.Execution
         {
             var result = node.Result;
 
-            IGraphType fieldType = node.ResolvedType;
+            IGraphType? fieldType = node.ResolvedType;
             var objectType = fieldType as IObjectGraphType;
 
             if (fieldType is NonNullGraphType nonNullType)
@@ -409,7 +409,7 @@ namespace GraphQL.Execution
                 {
                     throw new InvalidOperationException(
                         $"Abstract type {abstractType.Name} must resolve to an Object type at " +
-                        $"runtime for field {node.Parent.GraphType.Name}.{node.Name} " +
+                        $"runtime for field {node.Parent!.GraphType.Name}.{node.Name} " +
                         $"with value '{result}', received 'null'.");
                 }
 

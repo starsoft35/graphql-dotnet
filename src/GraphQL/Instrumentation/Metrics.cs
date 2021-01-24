@@ -11,8 +11,8 @@ namespace GraphQL.Instrumentation
     {
         private readonly bool _enabled;
         private ValueStopwatch _stopwatch;
-        private readonly List<PerfRecord> _records;
-        private PerfRecord _main;
+        private readonly List<PerfRecord>? _records;
+        private PerfRecord? _main;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Metrics"/> class.
@@ -37,7 +37,7 @@ namespace GraphQL.Instrumentation
                     throw new InvalidOperationException("Metrics.Start has already been called");
 
                 _main = new PerfRecord("operation", operationName, 0);
-                _records.Add(_main);
+                _records!.Add(_main);
                 _stopwatch = ValueStopwatch.StartNew();
             }
 
@@ -47,7 +47,7 @@ namespace GraphQL.Instrumentation
         /// <summary>
         /// Sets the name of the GraphQL operation.
         /// </summary>
-        public Metrics SetOperationName(string name)
+        public Metrics SetOperationName(string? name)
         {
             if (_enabled && _main != null)
                 _main.Subject = name;
@@ -67,7 +67,7 @@ namespace GraphQL.Instrumentation
                 throw new InvalidOperationException("Metrics.Start should be called before calling Metrics.Subject");
 
             var record = new PerfRecord(category, subject, _stopwatch.Elapsed.TotalMilliseconds, metadata);
-            lock (_records)
+            lock (_records!)
                 _records.Add(record);
             return new Marker(record, _stopwatch);
         }
@@ -75,13 +75,13 @@ namespace GraphQL.Instrumentation
         /// <summary>
         /// Returns the collected performance metrics.
         /// </summary>
-        public PerfRecord[] Finish()
+        public PerfRecord[]? Finish()
         {
             if (!_enabled)
                 return null;
 
             _main?.MarkEnd(_stopwatch.Elapsed.TotalMilliseconds);
-            return _records.OrderBy(x => x.Start).ToArray();
+            return _records!.OrderBy(x => x.Start).ToArray();
         }
 
         /// <summary>

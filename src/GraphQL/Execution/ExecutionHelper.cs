@@ -74,14 +74,14 @@ namespace GraphQL.Execution
         /// <summary>
         /// Returns all of the variable values defined for the operation from the attached <see cref="Inputs"/> object.
         /// </summary>
-        public static Variables GetVariableValues(Document document, ISchema schema, VariableDefinitions variableDefinitions, Inputs inputs)
+        public static Variables GetVariableValues(Document document, ISchema schema, VariableDefinitions? variableDefinitions, Inputs inputs)
         {
             if ((variableDefinitions?.List?.Count ?? 0) == 0)
             {
                 return Variables.None;
             }
 
-            var variables = new Variables(variableDefinitions.List.Count);
+            var variables = new Variables(variableDefinitions!.List!.Count);
 
             if (variableDefinitions != null)
             {
@@ -160,7 +160,7 @@ namespace GraphQL.Execution
             }
             public string Name { get; set; }
             public int? Index { get; set; }
-            public string ChildName { get; set; }
+            public string? ChildName { get; set; }
             public override string ToString() => (!Index.HasValue ? Name : Name + "[" + Index.Value + "]") + (ChildName != null ? '.' + ChildName : null);
             public static implicit operator VariableName(string name) => new VariableName { Name = name };
             public static implicit operator string(VariableName variableName) => variableName.ToString();
@@ -175,7 +175,7 @@ namespace GraphQL.Execution
         /// <br/><br/>
         /// Since v3.3, returns null for variables set to null rather than the variable's default value.
         /// </summary>
-        private static object GetVariableValue(Document document, IGraphType graphType, VariableDefinition variable, object input)
+        private static object? GetVariableValue(Document document, IGraphType graphType, VariableDefinition variable, object? input)
         {
             try
             {
@@ -188,7 +188,7 @@ namespace GraphQL.Execution
             }
 
             // Coerces a value depending on the graph type.
-            static object ParseValue(IGraphType type, VariableName variableName, object value)
+            static object? ParseValue(IGraphType type, VariableName variableName, object? value)
             {
                 if (type is IInputObjectGraphType inputObjectGraphType)
                 {
@@ -216,7 +216,7 @@ namespace GraphQL.Execution
             }
 
             // Coerces a scalar value
-            static object ParseValueScalar(ScalarGraphType scalarGraphType, VariableName variableName, object value)
+            static object? ParseValueScalar(ScalarGraphType scalarGraphType, VariableName variableName, object? value)
             {
                 if (value == null)
                     return null;
@@ -238,7 +238,7 @@ namespace GraphQL.Execution
                 return ret;
             }
 
-            static object ParseValueList(ListGraphType listGraphType, VariableName variableName, object value)
+            static object? ParseValueList(ListGraphType listGraphType, VariableName variableName, object? value)
             {
                 if (value == null)
                     return null;
@@ -250,7 +250,7 @@ namespace GraphQL.Execution
                     // create a list containing the parsed elements in the input list
                     if (values is IList list)
                     {
-                        var valueOutputs = new object[list.Count];
+                        var valueOutputs = new object?[list.Count];
                         for (int index = 0; index < list.Count; index++)
                         {
                             // parse/validate values as required by graph type
@@ -260,7 +260,7 @@ namespace GraphQL.Execution
                     }
                     else
                     {
-                        var valueOutputs = new List<object>(values is ICollection collection ? collection.Count : 0);
+                        var valueOutputs = new List<object?>(values is ICollection collection ? collection.Count : 0);
                         int index = 0;
                         foreach (var val in values)
                         {
@@ -277,11 +277,11 @@ namespace GraphQL.Execution
                     // result of input coercion for the list’s item type on the provided value (note this may apply
                     // recursively for nested lists).
                     var result = ParseValue(listGraphType.ResolvedType, variableName, value);
-                    return new object[] { result };
+                    return new object?[] { result };
                 }
             }
 
-            static object ParseValueObject(IInputObjectGraphType graphType, VariableName variableName, object value)
+            static object? ParseValueObject(IInputObjectGraphType graphType, VariableName variableName, object? value)
             {
                 if (value == null)
                     return null;
@@ -295,7 +295,7 @@ namespace GraphQL.Execution
                     throw new InvalidVariableError(variableName, $"Unable to parse input as a '{graphType.Name}' type. Did you provide a List or Scalar value accidentally?");
                 }
 
-                var newDictionary = new Dictionary<string, object>(dic.Count);
+                var newDictionary = new Dictionary<string, object?>(dic.Count);
                 foreach (var field in graphType.Fields.List)
                 {
                     var childFieldVariableName = new VariableName(variableName, field.Name);
@@ -336,7 +336,7 @@ namespace GraphQL.Execution
                 // must be thrown. In either case, the input object literal or unordered
                 // map must not contain any entries with names not defined by a field
                 // of this input object type, ***otherwise an error must be thrown.***
-                List<string> unknownFields = null;
+                List<string>? unknownFields = null;
                 foreach (var key in dic.Keys)
                 {
                     bool match = false;
@@ -367,7 +367,7 @@ namespace GraphQL.Execution
         /// Returns a dictionary of arguments and their values for a field or directive. Values will be retrieved from literals
         /// or variables as specified by the document.
         /// </summary>
-        public static Dictionary<string, ArgumentValue> GetArgumentValues(QueryArguments definitionArguments, Arguments astArguments, Variables variables)
+        public static Dictionary<string, ArgumentValue>? GetArgumentValues(QueryArguments? definitionArguments, Arguments astArguments, Variables? variables)
         {
             if (definitionArguments == null || definitionArguments.Count == 0)
             {
@@ -391,7 +391,7 @@ namespace GraphQL.Execution
         /// Coerces a literal value to a compatible .NET type for the variable's graph type.
         /// Typically this is a value for a field argument or default value for a variable.
         /// </summary>
-        public static ArgumentValue CoerceValue(IGraphType type, IValue input, Variables variables = null, object fieldDefault = null)
+        public static ArgumentValue CoerceValue(IGraphType type, IValue? input, Variables? variables = null, object? fieldDefault = null)
         {
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
@@ -432,7 +432,7 @@ namespace GraphQL.Execution
                     if (count == 0)
                         return new ArgumentValue(Array.Empty<object>(), ArgumentSource.Literal);
 
-                    var values = new object[count];
+                    var values = new object?[count];
                     for (int i = 0; i < count; ++i)
                         values[i] = CoerceValue(listItemType, list.ValuesList[i], variables).Value;
                     return new ArgumentValue(values, ArgumentSource.Literal);
@@ -450,7 +450,7 @@ namespace GraphQL.Execution
                     return ArgumentValue.NullLiteral;
                 }
 
-                var obj = new Dictionary<string, object>();
+                var obj = new Dictionary<string, object?>();
 
                 foreach (var field in inputObjectGraphType.Fields.List)
                 {
@@ -499,7 +499,7 @@ namespace GraphQL.Execution
         private static Fields CollectFields(
             ExecutionContext context,
             IGraphType specificType,
-            SelectionSet selectionSet,
+            SelectionSet? selectionSet,
             Fields fields,
             List<string> visitedFragmentNames)
         {
@@ -565,7 +565,7 @@ namespace GraphQL.Execution
         public static Dictionary<string, Field> CollectFields(
             ExecutionContext context,
             IGraphType specificType,
-            SelectionSet selectionSet)
+            SelectionSet? selectionSet)
         {
             return CollectFields(context, specificType, selectionSet, Fields.Empty(), new List<string>());
         }
@@ -590,7 +590,7 @@ namespace GraphQL.Execution
                         directive.Arguments,
                         context.Variables);
 
-                    if (values.TryGetValue("if", out ArgumentValue ifObj) && bool.TryParse(ifObj.Value?.ToString() ?? string.Empty, out bool ifVal) && ifVal)
+                    if (values!.TryGetValue("if", out ArgumentValue ifObj) && bool.TryParse(ifObj.Value?.ToString() ?? string.Empty, out bool ifVal) && ifVal)
                         return false;
                 }
 
@@ -602,7 +602,7 @@ namespace GraphQL.Execution
                         directive.Arguments,
                         context.Variables);
 
-                    return values.TryGetValue("if", out ArgumentValue ifObj) && bool.TryParse(ifObj.Value?.ToString() ?? string.Empty, out bool ifVal) && ifVal;
+                    return values!.TryGetValue("if", out ArgumentValue ifObj) && bool.TryParse(ifObj.Value?.ToString() ?? string.Empty, out bool ifVal) && ifVal;
                 }
             }
 

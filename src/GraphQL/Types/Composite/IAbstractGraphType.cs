@@ -30,7 +30,7 @@ namespace GraphQL.Types
             return false;
         }
 
-        public static IObjectGraphType GetObjectType(this IAbstractGraphType abstractType, object value, ISchema schema)
+        public static IObjectGraphType GetObjectType(this IAbstractGraphType abstractType, object? value, ISchema schema)
         {
             var result = abstractType.ResolveType != null
                 ? abstractType.ResolveType(value)

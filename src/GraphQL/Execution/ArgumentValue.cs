@@ -18,7 +18,7 @@ namespace GraphQL.Execution
         /// <summary>
         /// Initializes a new instance with the specified values.
         /// </summary>
-        public ArgumentValue(object value, ArgumentSource source)
+        public ArgumentValue(object? value, ArgumentSource source)
         {
             Value = value;
             Source = source;
@@ -27,7 +27,7 @@ namespace GraphQL.Execution
         /// <summary>
         /// Returns the value of the argument.
         /// </summary>
-        public object Value { get; }
+        public object? Value { get; }
 
         /// <summary>
         /// Returns a value indicating the source of the argument's value.

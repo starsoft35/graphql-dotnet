@@ -36,7 +36,7 @@ namespace GraphQL
         public object RootValue { get; set; }
 
         /// <inheritdoc/>
-        public IDictionary<string, object> UserContext { get; set; }
+        public IDictionary<string, object?> UserContext { get; set; }
 
         /// <inheritdoc/>
         public object Source { get; set; }

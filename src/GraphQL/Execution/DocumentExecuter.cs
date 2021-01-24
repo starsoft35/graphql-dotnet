@@ -73,8 +73,8 @@ namespace GraphQL
 
             var metrics = new Metrics(options.EnableMetrics).Start(options.OperationName);
 
-            ExecutionResult result = null;
-            ExecutionContext context = null;
+            ExecutionResult? result = null;
+            ExecutionContext? context = null;
 
             try
             {
@@ -327,10 +327,10 @@ namespace GraphQL
 
         private ExecutionContext BuildExecutionContext(
             ISchema schema,
-            object root,
+            object? root,
             Document document,
             Operation operation,
-            Inputs inputs,
+            Inputs? inputs,
             IDictionary<string, object> userContext,
             CancellationToken cancellationToken,
             Metrics metrics,
@@ -338,7 +338,7 @@ namespace GraphQL
             bool throwOnUnhandledException,
             Action<UnhandledExceptionContext> unhandledExceptionDelegate,
             int? maxParallelExecutionCount,
-            IServiceProvider requestServices)
+            IServiceProvider? requestServices)
         {
             var context = new ExecutionContext
             {
@@ -371,7 +371,7 @@ namespace GraphQL
         /// Returns <c>null</c> if an operation cannot be found that matches the given criteria.
         /// Returns the first operation from the document if no operation name was specified.
         /// </summary>
-        protected virtual Operation GetOperation(string operationName, Document document)
+        protected virtual Operation? GetOperation(string operationName, Document document)
         {
             return string.IsNullOrWhiteSpace(operationName)
                 ? document.Operations.FirstOrDefault()

@@ -24,7 +24,7 @@ namespace GraphQL.DataLoader
             Key = key;
         }
 
-        private T _result;
+        private T? _result;
 
         /// <summary>
         /// Returns the key that is passed to the data loader's fetch delegate
@@ -39,7 +39,7 @@ namespace GraphQL.DataLoader
         /// <summary>
         /// Returns the result if it has been set, or default(T) if not
         /// </summary>
-        public T Result => IsResultSet ? _result : throw new InvalidOperationException("Result has not been set");
+        public T? Result => IsResultSet ? _result : throw new InvalidOperationException("Result has not been set");
 
         /// <summary>
         /// Returns a boolean that indicates if the result has been set
@@ -50,7 +50,7 @@ namespace GraphQL.DataLoader
         /// Sets the result if it has not yet been set
         /// </summary>
         /// <exception cref="InvalidOperationException">Throws when the result has already been set</exception>
-        public void SetResult(T value)
+        public void SetResult(T? value)
         {
             if (IsResultSet)
                 throw new InvalidOperationException("Result has already been set");
@@ -62,14 +62,14 @@ namespace GraphQL.DataLoader
         /// Asynchronously executes the loader if it has not yet been executed; then returns the result
         /// </summary>
         /// <param name="cancellationToken">Optional <seealso cref="CancellationToken"/> to pass to fetch delegate</param>
-        public async Task<T> GetResultAsync(CancellationToken cancellationToken = default)
+        public async Task<T?> GetResultAsync(CancellationToken cancellationToken = default)
         {
             if (!IsResultSet)
                 await Loader.DispatchAsync(cancellationToken).ConfigureAwait(false);
             return Result;
         }
 
-        async Task<object> IDataLoaderResult.GetResultAsync(CancellationToken cancellationToken)
+        async Task<object?> IDataLoaderResult.GetResultAsync(CancellationToken cancellationToken)
         {
             if (!IsResultSet)
                 await Loader.DispatchAsync(cancellationToken).ConfigureAwait(false);

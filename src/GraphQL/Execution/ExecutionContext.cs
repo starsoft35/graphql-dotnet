@@ -19,10 +19,10 @@ namespace GraphQL.Execution
         public ISchema Schema { get; set; }
 
         /// <inheritdoc/>
-        public object RootValue { get; set; }
+        public object? RootValue { get; set; }
 
         /// <inheritdoc/>
-        public IDictionary<string, object> UserContext { get; set; }
+        public IDictionary<string, object?> UserContext { get; set; }
 
         /// <inheritdoc/>
         public Operation Operation { get; set; }
@@ -31,7 +31,7 @@ namespace GraphQL.Execution
         public Fragments Fragments { get; set; }
 
         /// <inheritdoc/>
-        public Variables Variables { get; set; }
+        public Variables? Variables { get; set; }
 
         /// <inheritdoc/>
         public ExecutionErrors Errors { get; set; }
@@ -58,7 +58,7 @@ namespace GraphQL.Execution
         public Dictionary<string, object> Extensions { get; set; }
 
         /// <inheritdoc/>
-        public IServiceProvider RequestServices { get; set; }
+        public IServiceProvider? RequestServices { get; set; }
 
         /// <inheritdoc/>
         public TElement[] Rent<TElement>(int minimumLength)
@@ -128,6 +128,6 @@ namespace GraphQL.Execution
         /// access is restricted to <see cref="System.Threading.Interlocked.Exchange{T}(ref T, T)"/>
         /// and <see cref="System.Threading.Interlocked.CompareExchange{T}(ref T, T, T)"/>.
         /// </summary>
-        internal ReadonlyResolveFieldContext ReusableReadonlyResolveFieldContext;
+        internal ReadonlyResolveFieldContext? ReusableReadonlyResolveFieldContext;
     }
 }

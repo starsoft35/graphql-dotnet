@@ -166,14 +166,14 @@ namespace GraphQL.Builders
         }
 
         /// <inheritdoc cref="FieldBuilder{TSourceType, TReturnType}.Description(string)"/>
-        public ConnectionBuilder<TSourceType> Description(string description)
+        public ConnectionBuilder<TSourceType> Description(string? description)
         {
             FieldType.Description = description;
             return this;
         }
 
         /// <inheritdoc cref="FieldBuilder{TSourceType, TReturnType}.DeprecationReason(string)"/>
-        public ConnectionBuilder<TSourceType> DeprecationReason(string deprecationReason)
+        public ConnectionBuilder<TSourceType> DeprecationReason(string? deprecationReason)
         {
             FieldType.DeprecationReason = deprecationReason;
             return this;
@@ -203,7 +203,7 @@ namespace GraphQL.Builders
         /// <typeparam name="TArgumentGraphType">The graph type of the argument.</typeparam>
         /// <param name="name">The name of the argument.</param>
         /// <param name="description">The description of the argument.</param>
-        public ConnectionBuilder<TSourceType> Argument<TArgumentGraphType>(string name, string description)
+        public ConnectionBuilder<TSourceType> Argument<TArgumentGraphType>(string name, string? description)
             where TArgumentGraphType : IGraphType
         {
             FieldType.Arguments.Add(new QueryArgument(typeof(TArgumentGraphType))
@@ -222,8 +222,8 @@ namespace GraphQL.Builders
         /// <param name="name">The name of the argument.</param>
         /// <param name="description">The description of the argument.</param>
         /// <param name="defaultValue">The default value of the argument.</param>
-        public ConnectionBuilder<TSourceType> Argument<TArgumentGraphType, TArgumentType>(string name, string description,
-            TArgumentType defaultValue = default)
+        public ConnectionBuilder<TSourceType> Argument<TArgumentGraphType, TArgumentType>(string name, string? description,
+            TArgumentType? defaultValue = default)
             where TArgumentGraphType : IGraphType
         {
             FieldType.Arguments.Add(new QueryArgument(typeof(TArgumentGraphType))

@@ -39,7 +39,7 @@ namespace GraphQL.Validation
         public TypeInfo TypeInfo { get; set; }
 
         /// <inheritdoc/>
-        public IDictionary<string, object> UserContext { get; set; }
+        public IDictionary<string, object?> UserContext { get; set; }
 
         /// <summary>
         /// Returns a list of validation errors for this document.

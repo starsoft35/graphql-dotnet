@@ -77,7 +77,7 @@ namespace GraphQL.DataLoader
         /// <param name="maxBatchSize">The maximum number of keys passed to the fetch delegate at a time</param>
         /// <returns>A new or existing DataLoader instance</returns>
         public static IDataLoader<TKey, T> GetOrAddBatchLoader<TKey, T>(this DataLoaderContext context, string loaderKey, Func<IEnumerable<TKey>, CancellationToken, Task<IDictionary<TKey, T>>> fetchFunc,
-            IEqualityComparer<TKey> keyComparer = null, T defaultValue = default, int maxBatchSize = int.MaxValue)
+            IEqualityComparer<TKey>? keyComparer = null, T? defaultValue = default, int maxBatchSize = int.MaxValue)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
@@ -101,7 +101,7 @@ namespace GraphQL.DataLoader
         /// <param name="maxBatchSize">The maximum number of keys passed to the fetch delegate at a time</param>
         /// <returns>A new or existing DataLoader instance</returns>
         public static IDataLoader<TKey, T> GetOrAddBatchLoader<TKey, T>(this DataLoaderContext context, string loaderKey, Func<IEnumerable<TKey>, Task<IDictionary<TKey, T>>> fetchFunc,
-            IEqualityComparer<TKey> keyComparer = null, T defaultValue = default, int maxBatchSize = int.MaxValue)
+            IEqualityComparer<TKey>? keyComparer = null, T? defaultValue = default, int maxBatchSize = int.MaxValue)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
@@ -126,7 +126,7 @@ namespace GraphQL.DataLoader
         /// <param name="maxBatchSize">The maximum number of keys passed to the fetch delegate at a time</param>
         /// <returns>A new or existing DataLoader instance</returns>
         public static IDataLoader<TKey, T> GetOrAddBatchLoader<TKey, T>(this DataLoaderContext context, string loaderKey, Func<IEnumerable<TKey>, CancellationToken, Task<IEnumerable<T>>> fetchFunc,
-            Func<T, TKey> keySelector, IEqualityComparer<TKey> keyComparer = null, T defaultValue = default, int maxBatchSize = int.MaxValue)
+            Func<T, TKey> keySelector, IEqualityComparer<TKey>? keyComparer = null, T? defaultValue = default, int maxBatchSize = int.MaxValue)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
@@ -154,7 +154,7 @@ namespace GraphQL.DataLoader
         /// <param name="maxBatchSize">The maximum number of keys passed to the fetch delegate at a time</param>
         /// <returns>A new or existing DataLoader instance</returns>
         public static IDataLoader<TKey, T> GetOrAddBatchLoader<TKey, T>(this DataLoaderContext context, string loaderKey, Func<IEnumerable<TKey>, Task<IEnumerable<T>>> fetchFunc,
-            Func<T, TKey> keySelector, IEqualityComparer<TKey> keyComparer = null, T defaultValue = default, int maxBatchSize = int.MaxValue)
+            Func<T, TKey> keySelector, IEqualityComparer<TKey>? keyComparer = null, T? defaultValue = default, int maxBatchSize = int.MaxValue)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
@@ -180,7 +180,7 @@ namespace GraphQL.DataLoader
         /// <param name="maxBatchSize">The maximum number of keys passed to the fetch delegate at a time</param>
         /// <returns>A new or existing DataLoader instance</returns>
         public static IDataLoader<TKey, IEnumerable<T>> GetOrAddCollectionBatchLoader<TKey, T>(this DataLoaderContext context, string loaderKey, Func<IEnumerable<TKey>, CancellationToken, Task<ILookup<TKey, T>>> fetchFunc,
-            IEqualityComparer<TKey> keyComparer = null, int maxBatchSize = int.MaxValue)
+            IEqualityComparer<TKey>? keyComparer = null, int maxBatchSize = int.MaxValue)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
@@ -203,7 +203,7 @@ namespace GraphQL.DataLoader
         /// <param name="maxBatchSize">The maximum number of keys passed to the fetch delegate at a time</param>
         /// <returns>A new or existing DataLoader instance</returns>
         public static IDataLoader<TKey, IEnumerable<T>> GetOrAddCollectionBatchLoader<TKey, T>(this DataLoaderContext context, string loaderKey, Func<IEnumerable<TKey>, Task<ILookup<TKey, T>>> fetchFunc,
-            IEqualityComparer<TKey> keyComparer = null, int maxBatchSize = int.MaxValue)
+            IEqualityComparer<TKey>? keyComparer = null, int maxBatchSize = int.MaxValue)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
@@ -227,7 +227,7 @@ namespace GraphQL.DataLoader
         /// <param name="maxBatchSize">The maximum number of keys passed to the fetch delegate at a time</param>
         /// <returns>A new or existing DataLoader instance</returns>
         public static IDataLoader<TKey, IEnumerable<T>> GetOrAddCollectionBatchLoader<TKey, T>(this DataLoaderContext context, string loaderKey, Func<IEnumerable<TKey>, CancellationToken, Task<IEnumerable<T>>> fetchFunc,
-            Func<T, TKey> keySelector, IEqualityComparer<TKey> keyComparer = null, int maxBatchSize = int.MaxValue)
+            Func<T, TKey> keySelector, IEqualityComparer<TKey>? keyComparer = null, int maxBatchSize = int.MaxValue)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
@@ -254,7 +254,7 @@ namespace GraphQL.DataLoader
         /// <param name="maxBatchSize">The maximum number of keys passed to the fetch delegate at a time</param>
         /// <returns>A new or existing DataLoader instance</returns>
         public static IDataLoader<TKey, IEnumerable<T>> GetOrAddCollectionBatchLoader<TKey, T>(this DataLoaderContext context, string loaderKey, Func<IEnumerable<TKey>, Task<IEnumerable<T>>> fetchFunc,
-            Func<T, TKey> keySelector, IEqualityComparer<TKey> keyComparer = null, int maxBatchSize = int.MaxValue)
+            Func<T, TKey> keySelector, IEqualityComparer<TKey>? keyComparer = null, int maxBatchSize = int.MaxValue)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));

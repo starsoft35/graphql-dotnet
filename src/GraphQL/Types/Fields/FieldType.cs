@@ -12,8 +12,8 @@ namespace GraphQL.Types
     [DebuggerDisplay("{Name,nq}: {ResolvedType,nq}")]
     public class FieldType : MetadataProvider, IFieldType, IProvideResolvedType
     {
-        private object _defaultValue;
-        private IValue _defaultValueAST;
+        private object? _defaultValue;
+        private IValue? _defaultValueAST;
 
         private string _name;
         /// <inheritdoc/>
@@ -37,15 +37,15 @@ namespace GraphQL.Types
         }
 
         /// <inheritdoc/>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <inheritdoc/>
-        public string DeprecationReason { get; set; }
+        public string? DeprecationReason { get; set; }
 
         /// <summary>
         /// Gets or sets the default value of the field. Only applies to fields of input object graph types.
         /// </summary>
-        public object DefaultValue
+        public object? DefaultValue
         {
             get => _defaultValue;
             set
@@ -61,20 +61,20 @@ namespace GraphQL.Types
         /// <summary>
         /// Gets or sets the graph type of this field.
         /// </summary>
-        public Type Type { get; set; }
+        public Type? Type { get; set; }
 
         /// <summary>
         /// Gets or sets the graph type of this field.
         /// </summary>
-        public IGraphType ResolvedType { get; set; }
+        public IGraphType? ResolvedType { get; set; }
 
         /// <inheritdoc/>
-        public QueryArguments Arguments { get; set; }
+        public QueryArguments? Arguments { get; set; }
 
         /// <summary>
         /// Gets or sets a field resolver for the field. Only applicable to fields of output graph types.
         /// </summary>
-        public IFieldResolver Resolver { get; set; }
+        public IFieldResolver? Resolver { get; set; }
 
         internal IValue GetDefaultValueAST(ISchema schema)
         {

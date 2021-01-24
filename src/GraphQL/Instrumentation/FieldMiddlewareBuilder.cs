@@ -12,8 +12,8 @@ namespace GraphQL.Instrumentation
     /// </summary>
     public class FieldMiddlewareBuilder : IFieldMiddlewareBuilder
     {
-        private Func<ISchema, FieldMiddlewareDelegate, FieldMiddlewareDelegate> _singleMiddleware;
-        private IList<Func<ISchema, FieldMiddlewareDelegate, FieldMiddlewareDelegate>> _middlewares;
+        private Func<ISchema, FieldMiddlewareDelegate, FieldMiddlewareDelegate>? _singleMiddleware;
+        private IList<Func<ISchema, FieldMiddlewareDelegate, FieldMiddlewareDelegate>>? _middlewares;
 
         /// <inheritdoc/>
         public IFieldMiddlewareBuilder Use(Func<ISchema, FieldMiddlewareDelegate, FieldMiddlewareDelegate> middleware)

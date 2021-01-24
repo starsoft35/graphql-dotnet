@@ -13,12 +13,12 @@ namespace GraphQL.Types
         /// <summary>
         /// Gets or sets the description of the field.
         /// </summary>
-        string Description { get; set; }
+        string? Description { get; set; }
 
         /// <summary>
         /// Gets or sets the deprecation reason of the field. Only applicable to fields of output graph types.
         /// </summary>
-        string DeprecationReason { get; set; }
+        string? DeprecationReason { get; set; }
 
         /// <summary>
         /// Gets or sets a list of arguments for the field.

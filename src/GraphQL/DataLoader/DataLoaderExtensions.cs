@@ -22,7 +22,7 @@ namespace GraphQL.DataLoader
         /// A task that will complete when the DataLoader has been dispatched,
         /// or a completed task if the result is already cached.
         /// </returns>
-        public static IDataLoaderResult<T[]> LoadAsync<TKey, T>(this IDataLoader<TKey, T> dataLoader, IEnumerable<TKey> keys)
+        public static IDataLoaderResult<T?[]> LoadAsync<TKey, T>(this IDataLoader<TKey, T> dataLoader, IEnumerable<TKey> keys)
         {
             var results = new List<IDataLoaderResult<T>>();
 
@@ -34,7 +34,7 @@ namespace GraphQL.DataLoader
             return new DataLoaderResultWhenAll<T>(results);
         }
 
-        private class DataLoaderResultWhenAll<T> : IDataLoaderResult<T[]>
+        private class DataLoaderResultWhenAll<T> : IDataLoaderResult<T?[]>
         {
             private readonly IEnumerable<IDataLoaderResult<T>> _dataLoaderResults;
 
@@ -43,10 +43,10 @@ namespace GraphQL.DataLoader
                 _dataLoaderResults = dataLoaderResults ?? throw new ArgumentNullException(nameof(dataLoaderResults));
             }
 
-            public Task<T[]> GetResultAsync(CancellationToken cancellationToken = default)
+            public Task<T?[]?> GetResultAsync(CancellationToken cancellationToken = default)
                 => Task.WhenAll(_dataLoaderResults.Select(x => x.GetResultAsync(cancellationToken)));
 
-            async Task<object> IDataLoaderResult.GetResultAsync(CancellationToken cancellationToken)
+            async Task<object?> IDataLoaderResult.GetResultAsync(CancellationToken cancellationToken)
                 => await GetResultAsync(cancellationToken).ConfigureAwait(false);
         }
 
@@ -59,7 +59,7 @@ namespace GraphQL.DataLoader
         /// A task that will complete when the DataLoader has been dispatched,
         /// or a completed task if the results are already cached.
         /// </returns>
-        public static IDataLoaderResult<T[]> LoadAsync<TKey, T>(this IDataLoader<TKey, T> dataLoader, params TKey[] keys)
+        public static IDataLoaderResult<T?[]> LoadAsync<TKey, T>(this IDataLoader<TKey, T> dataLoader, params TKey[] keys)
             => dataLoader.LoadAsync(keys.AsEnumerable());
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace GraphQL.DataLoader
         /// <param name="parent">The pending data loader operation</param>
         /// <param name="chainedDelegate">The delegate to execute once the data loader finishes loading</param>
         /// <returns>A pending data loader operation that can return a value once the data loader and the chained delegate finish</returns>
-        public static IDataLoaderResult<TResult> Then<T, TResult>(this IDataLoaderResult<T> parent, Func<T, CancellationToken, Task<TResult>> chainedDelegate)
+        public static IDataLoaderResult<TResult> Then<T, TResult>(this IDataLoaderResult<T> parent, Func<T?, CancellationToken, Task<TResult?>> chainedDelegate)
         {
             return new SimpleDataLoader<TResult>(async (cancellationToken) =>
             {
@@ -87,7 +87,7 @@ namespace GraphQL.DataLoader
         /// <param name="parent">The pending data loader operation</param>
         /// <param name="chainedDelegate">The delegate to execute once the data loader finishes loading</param>
         /// <returns>A pending data loader operation that can return a value once the data loader and the chained delegate finish</returns>
-        public static IDataLoaderResult<TResult> Then<T, TResult>(this IDataLoaderResult<T> parent, Func<T, Task<TResult>> chainedDelegate)
+        public static IDataLoaderResult<TResult> Then<T, TResult>(this IDataLoaderResult<T> parent, Func<T?, Task<TResult?>> chainedDelegate)
         {
             return new SimpleDataLoader<TResult>(async (cancellationToken) =>
             {
@@ -104,7 +104,7 @@ namespace GraphQL.DataLoader
         /// <param name="parent">The pending data loader operation</param>
         /// <param name="chainedDelegate">The delegate to execute once the data loader finishes loading</param>
         /// <returns>A pending data loader operation that can return a value once the data loader and the chained delegate finish</returns>
-        public static IDataLoaderResult<TResult> Then<T, TResult>(this IDataLoaderResult<T> parent, Func<T, TResult> chainedDelegate)
+        public static IDataLoaderResult<TResult> Then<T, TResult>(this IDataLoaderResult<T> parent, Func<T?, TResult?> chainedDelegate)
         {
             return new SimpleDataLoader<TResult>(async (cancellationToken) =>
             {

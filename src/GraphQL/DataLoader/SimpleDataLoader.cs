@@ -10,14 +10,14 @@ namespace GraphQL.DataLoader
     /// <typeparam name="T">The type of data that is returned</typeparam>
     public class SimpleDataLoader<T> : IDataLoader, IDataLoader<T>, IDataLoaderResult<T>
     {
-        private readonly Func<CancellationToken, Task<T>> _fetchDelegate;
-        private Task<T> _result;
+        private readonly Func<CancellationToken, Task<T?>> _fetchDelegate;
+        private Task<T?>? _result;
 
         /// <summary>
         /// Initializes a new SimpleDataLoader with the given fetch delegate
         /// </summary>
         /// <param name="fetchDelegate">An asynchronous delegate that accepts a cancellation token and returns data</param>
-        public SimpleDataLoader(Func<CancellationToken, Task<T>> fetchDelegate)
+        public SimpleDataLoader(Func<CancellationToken, Task<T?>> fetchDelegate)
         {
             _fetchDelegate = fetchDelegate ?? throw new ArgumentNullException(nameof(fetchDelegate));
         }
@@ -32,7 +32,7 @@ namespace GraphQL.DataLoader
         /// Asynchronously executes the fetch delegate if it has not already been run, then returns the data
         /// </summary>
         /// <param name="cancellationToken">Optional <seealso cref="CancellationToken"/> to pass to fetch delegate</param>
-        public Task<T> GetResultAsync(CancellationToken cancellationToken = default)
+        public Task<T?> GetResultAsync(CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -50,7 +50,7 @@ namespace GraphQL.DataLoader
                 }
                 catch (Exception ex)
                 {
-                    _result = Task.FromException<T>(ex);
+                    _result = Task.FromException<T?>(ex);
                     throw;
                 }
             }
@@ -64,7 +64,7 @@ namespace GraphQL.DataLoader
         /// </returns>
         public IDataLoaderResult<T> LoadAsync() => this;
 
-        async Task<object> IDataLoaderResult.GetResultAsync(CancellationToken cancellationToken)
+        async Task<object?> IDataLoaderResult.GetResultAsync(CancellationToken cancellationToken)
             => await GetResultAsync(cancellationToken).ConfigureAwait(false);
     }
 }

@@ -80,16 +80,16 @@ namespace GraphQL.Types
         }
 
         /// <inheritdoc/>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <inheritdoc/>
         public IObjectGraphType Query { get; set; }
 
         /// <inheritdoc/>
-        public IObjectGraphType Mutation { get; set; }
+        public IObjectGraphType? Mutation { get; set; }
 
         /// <inheritdoc/>
-        public IObjectGraphType Subscription { get; set; }
+        public IObjectGraphType? Subscription { get; set; }
 
         /// <summary>
         /// Gets the service object of the specified type. Schema itself acts as a service provider used to

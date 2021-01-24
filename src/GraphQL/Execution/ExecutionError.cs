@@ -13,7 +13,7 @@ namespace GraphQL
     [Serializable]
     public class ExecutionError : Exception
     {
-        private List<ErrorLocation> _errorLocations;
+        private List<ErrorLocation>? _errorLocations;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExecutionError"/> class with a specified error message.
@@ -47,17 +47,17 @@ namespace GraphQL
         /// <summary>
         /// Returns a list of locations within the document that this error applies to.
         /// </summary>
-        public IEnumerable<ErrorLocation> Locations => _errorLocations;
+        public IEnumerable<ErrorLocation>? Locations => _errorLocations;
 
         /// <summary>
         /// Gets or sets a code for this error.
         /// </summary>
-        public string Code { get; set; }
+        public string? Code { get; set; }
 
         /// <summary>
         /// Gets or sets the path within the GraphQL document where this error applies to.
         /// </summary>
-        public IEnumerable<object> Path { get; set; }
+        public IEnumerable<object>? Path { get; set; }
 
         /// <summary>
         /// Adds a location to the list of locations that this error applies to.
@@ -148,7 +148,7 @@ namespace GraphQL
         /// <summary>
         /// Adds a location to an <see cref="ExecutionError"/> based on a <see cref="AbstractNode"/> within a <see cref="Document"/>.
         /// </summary>
-        public static TError AddLocation<TError>(this TError error, AbstractNode abstractNode, Document document)
+        public static TError AddLocation<TError>(this TError error, AbstractNode? abstractNode, Document? document)
             where TError: ExecutionError
         {
             if (abstractNode == null || document == null)

@@ -13,7 +13,7 @@ namespace GraphQL.Types
         /// much like a field resolver does for output objects. For example, you can set some 'computed'
         /// properties for your input object which were not passed in the GraphQL request.
         /// </summary>
-        object ParseDictionary(IDictionary<string, object> value);
+        object ParseDictionary(IDictionary<string, object?> value);
     }
 
     /// <inheritdoc/>

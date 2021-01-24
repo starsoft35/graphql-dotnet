@@ -10,12 +10,12 @@ namespace GraphQL.DataLoader
     /// <typeparam name="T">The type of value that is returned</typeparam>
     public class DataLoaderResult<T> : IDataLoaderResult<T>
     {
-        private readonly Task<T> _result;
+        private readonly Task<T?> _result;
 
         /// <summary>
         /// Initializes a DataLoaderResult with the given asynchronous task
         /// </summary>
-        public DataLoaderResult(Task<T> result)
+        public DataLoaderResult(Task<T?> result)
         {
             _result = result ?? throw new ArgumentNullException(nameof(result));
         }
@@ -23,7 +23,7 @@ namespace GraphQL.DataLoader
         /// <summary>
         /// Initializes a DataLoaderResult with the given value
         /// </summary>
-        public DataLoaderResult(T result)
+        public DataLoaderResult(T? result)
         {
             _result = Task.FromResult(result);
         }
@@ -32,8 +32,8 @@ namespace GraphQL.DataLoader
         /// Asynchronously executes the loader if it has not yet been executed; then returns the result
         /// </summary>
         /// <param name="cancellationToken">Optional <seealso cref="CancellationToken"/> to pass to fetch delegate</param>
-        public Task<T> GetResultAsync(CancellationToken cancellationToken = default) => _result;
+        public Task<T?> GetResultAsync(CancellationToken cancellationToken = default) => _result;
 
-        async Task<object> IDataLoaderResult.GetResultAsync(CancellationToken cancellationToken) => await GetResultAsync(cancellationToken).ConfigureAwait(false);
+        async Task<object?> IDataLoaderResult.GetResultAsync(CancellationToken cancellationToken) => await GetResultAsync(cancellationToken).ConfigureAwait(false);
     }
 }

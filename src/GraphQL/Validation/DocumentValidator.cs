@@ -17,9 +17,9 @@ namespace GraphQL.Validation
             string originalQuery,
             ISchema schema,
             Document document,
-            IEnumerable<IValidationRule> rules = null,
-            IDictionary<string, object> userContext = null,
-            Inputs inputs = null);
+            IEnumerable<IValidationRule>? rules = null,
+            IDictionary<string, object>? userContext = null,
+            Inputs? inputs = null);
     }
 
     /// <inheritdoc/>
