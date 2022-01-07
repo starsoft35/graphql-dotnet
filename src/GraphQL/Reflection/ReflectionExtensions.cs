@@ -24,14 +24,59 @@ namespace GraphQL.Reflection
             if (parameter == null)
                 throw new ArgumentNullException(nameof(parameter));
 
-            var (nullableContext, nullabilityBytes) = GetMethodParameterNullability(parameter);
+#if NET6_0_OR_GREATER
+            return Interpret(new NullabilityInfoContext().Create(parameter));
+
+#else
             var list = new List<(Type, Nullability)>();
+            var (nullableContext, nullabilityBytes) = GetMethodParameterNullability(parameter);
             var index = 0;
             Consider(parameter.ParameterType, false, list, nullabilityBytes, nullableContext, ref index);
             if (nullabilityBytes != null && nullabilityBytes.Count != index)
                 throw new NullabilityInterpretationException(parameter);
             return list;
+#endif
         }
+
+#if NET6_0_OR_GREATER
+        private static IEnumerable<(Type, Nullability)> Interpret(NullabilityInfo info)
+        {
+            var list = new List<(Type, Nullability)>();
+            RecursiveLoop(info);
+            return list;
+
+            void RecursiveLoop(NullabilityInfo info)
+            {
+                if (info.Type.IsGenericType)
+                {
+                    if (info.Type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    {
+                        list.Add((info.Type.GetGenericArguments()[0], Nullability.Nullable));
+                    }
+                    else
+                    {
+                        list.Add((info.Type, Convert(info.ReadState)));
+                    }
+                    foreach (var t in info.GenericTypeArguments)
+                    {
+                        RecursiveLoop(t);
+                    }
+                }
+                else
+                {
+                    list.Add((info.Type, Convert(info.ReadState)));
+                }
+            }
+
+            static Nullability Convert(NullabilityState state) => state switch
+            {
+                NullabilityState.Unknown => Nullability.Unknown,
+                NullabilityState.NotNull => Nullability.NonNullable,
+                NullabilityState.Nullable => Nullability.Nullable,
+                _ => throw new ArgumentOutOfRangeException(nameof(state)),
+            };
+        }
+#endif
 
         /// <summary>
         /// Examines the property type and walks the type definitions, for each returning the nullability information for the type.
@@ -47,15 +92,20 @@ namespace GraphQL.Reflection
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
 
-            var (nullableContext, nullabilityBytes) = GetMemberNullability(property);
+#if NET6_0_OR_GREATER
+            return Interpret(new NullabilityInfoContext().Create(property));
+#else
             var list = new List<(Type, Nullability)>();
+            var (nullableContext, nullabilityBytes) = GetMemberNullability(property);
             var index = 0;
             Consider(property.PropertyType, false, list, nullabilityBytes, nullableContext, ref index);
             if (nullabilityBytes != null && nullabilityBytes.Count != index)
                 throw new NullabilityInterpretationException(property);
             return list;
+#endif
         }
 
+#if !NET6_0_OR_GREATER
         /// <summary>
         /// Returns the default NRT annotation for the parameter, and a list of the NRT annotations for the type.
         /// </summary>
@@ -195,5 +245,6 @@ namespace GraphQL.Reflection
                 }
             }
         }
+#endif
     }
 }
